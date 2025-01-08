@@ -7,7 +7,7 @@ import Vapor
 public func configure(_ app: Application) async throws {
     // uncomment to serve files from /Public folder
     // app.middleware.use(FileMiddleware(publicDirectory: app.directory.publicDirectory))
-
+    app.http.server.configuration.responseCompression = .enabled
     app.databases.use(DatabaseConfigurationFactory.mysql(
         hostname: Environment.get("DATABASE_HOST") ?? "localhost",
         port: Environment.get("DATABASE_PORT").flatMap(Int.init(_:)) ?? MySQLConfiguration.ianaPortNumber,
@@ -16,7 +16,8 @@ public func configure(_ app: Application) async throws {
         database: Environment.get("DATABASE_NAME") ?? "vapor_database"
     ), as: .mysql)
 
-    app.migrations.add(CreateTodo())
+    app.migrations.add(CreateUpdateSet())
+    app.migrations.add(CreateUpdateCard())
     // register routes
     try routes(app)
 }
