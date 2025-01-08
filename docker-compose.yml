@@ -17,6 +17,7 @@
 
 volumes:
   db_data:
+  db_config:
 
 x-shared_environment: &shared_environment
   LOG_LEVEL: ${LOG_LEVEL:-debug}
@@ -64,10 +65,11 @@ services:
     image: mysql:latest
     volumes:
       - db_data:/var/lib/mysql
+      - db_config:/etc
     environment:
       MYSQL_USER: vapor_username
       MYSQL_PASSWORD: vapor_password
       MYSQL_DATABASE: myMTG_database
-      MYSQL_RANDOM_ROOT_PASSWORD: 'no'
+      MYSQL_ROOT_PASSWORD: 126008
     ports:
-      - '3307:3307'
+      - '3307:3306'
