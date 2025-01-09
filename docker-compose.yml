@@ -72,4 +72,4 @@ services:
       MYSQL_DATABASE: myMTG_database
       MYSQL_ROOT_PASSWORD: 126008
     ports:
-      - '3307:3306'
+      - '3306:3306'

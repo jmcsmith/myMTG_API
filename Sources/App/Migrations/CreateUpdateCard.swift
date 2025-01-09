@@ -21,3 +21,4 @@ struct CreateUpdateCard: AsyncMigration {
         try await database.schema("updatecard").delete()
     }
 }
+
