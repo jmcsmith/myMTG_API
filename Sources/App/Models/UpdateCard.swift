@@ -20,15 +20,19 @@ final class UpdateCard: Model, @unchecked Sendable {
     @Field(key: "cardJSON")
     var cardJSON: String
     
+    @Field(key: "cardSetCode")
+    var cardSetCode: String
+    
     @Field(key: "updateDate")
     var updateDate: Date
     
     init() { }
 
-    init(id: UUID? = nil, cardUUID: String, cardJSON: String, updateDate: Date) {
+    init(id: UUID? = nil, cardUUID: String, cardJSON: String, cardSetCode: String, updateDate: Date) {
         self.id = id
         self.cardUUID = cardUUID
         self.cardJSON = cardJSON
+        self.cardSetCode = cardSetCode
         self.updateDate = updateDate
     }
 }

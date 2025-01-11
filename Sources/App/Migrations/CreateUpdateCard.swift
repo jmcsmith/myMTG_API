@@ -13,6 +13,7 @@ struct CreateUpdateCard: AsyncMigration {
             .id()
             .field("cardUUID", .string)
             .field("cardJSON", .custom("text"))
+            .field("cardSetCode", .string)
             .field("updateDate", .datetime, .required)
             .create()
     }

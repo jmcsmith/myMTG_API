@@ -14,6 +14,7 @@ struct CreateUpdateToken: AsyncMigration {
             .id()
             .field("tokenUUID", .string)
             .field("tokenJSON", .custom("text"))
+            .field("tokenSetCode", .string)
             .field("updateDate", .datetime, .required)
             .create()
     }

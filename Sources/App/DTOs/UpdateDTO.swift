@@ -18,8 +18,10 @@ struct UpdateDTO: Content {
 struct UpdateCardDTO: Content {
     var cardUUID: String
     var cardJSON: String
+    var cardSetCode: String
 }
 struct UpdateTokenDTO: Content {
     var tokenUUID: String
     var tokenJSON: String
+    var tokenSetCode: String
 }

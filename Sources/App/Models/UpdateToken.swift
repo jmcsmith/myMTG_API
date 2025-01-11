@@ -20,15 +20,19 @@ final class UpdateToken: Model, @unchecked Sendable {
     @Field(key: "tokenJSON")
     var tokenJSON: String
     
+    @Field(key: "tokenSetCode")
+    var tokenSetCode: String
+    
     @Field(key: "updateDate")
     var updateDate: Date
     
     init() { }
 
-    init(id: UUID? = nil, tokenUUID: String, tokenJSON: String, updateDate: Date) {
+    init(id: UUID? = nil, tokenUUID: String, tokenJSON: String, tokenSetCode: String, updateDate: Date) {
         self.id = id
         self.tokenUUID = tokenUUID
         self.tokenJSON = tokenJSON
+        self.tokenSetCode = tokenSetCode
         self.updateDate = updateDate
     }
 }

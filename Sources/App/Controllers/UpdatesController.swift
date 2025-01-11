@@ -45,7 +45,7 @@ struct UpdatesController: RouteCollection {
                 print("Updated Card: \(existingCard.cardUUID)")
             }
             else {
-                let card = UpdateCard(cardUUID: c.cardUUID, cardJSON: c.cardJSON, updateDate: update.updateDate)
+                let card = UpdateCard(cardUUID: c.cardUUID, cardJSON: c.cardJSON, cardSetCode: c.cardSetCode, updateDate: update.updateDate)
                 try await card.save(on: req.db)
                 print("Added Card: \(card.cardUUID)")
             }
@@ -58,7 +58,7 @@ struct UpdatesController: RouteCollection {
                 print("Updated Token: \(existingToken.tokenUUID)")
             }
             else {
-                let token = UpdateToken(tokenUUID: t.tokenUUID, tokenJSON: t.tokenJSON, updateDate: update.updateDate)
+                let token = UpdateToken(tokenUUID: t.tokenUUID, tokenJSON: t.tokenJSON, tokenSetCode: t.tokenSetCode, updateDate: update.updateDate)
                 try await token.save(on: req.db)
                 print("Added Token: \(token.tokenUUID)")
             }
