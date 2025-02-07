@@ -7,8 +7,9 @@
 
 import Fluent
 import Foundation
+import Vapor
 
-final class UpdateCard: Model, @unchecked Sendable {
+final class UpdateCard: Model, Content, @unchecked Sendable {
     static let schema = "updatecard"
     
     @ID(key: .id)

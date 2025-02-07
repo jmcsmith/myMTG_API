@@ -18,10 +18,23 @@ struct UpdatesController: RouteCollection {
     }
     
     @Sendable
-    func index(req: Request) async throws -> [String] {
-       
-        
-        return []
+    func index(req: Request) async throws -> Updates {
+
+        var cards: [UpdateCard] = []
+        var tokens: [UpdateToken] = []
+        var sets: [UpdateSet] = []
+        let inputString = try req.query.get(String.self, at: "date")
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        let lastUpdate = dateFormatter.date(from: inputString) ?? Date()
+        do {
+            cards = try await UpdateCard.query(on: req.db).filter(UpdateCard.self, \.$updateDate >= lastUpdate).sort(UpdateCard.self, \.$updateDate, .descending).all()
+            tokens = try await UpdateToken.query(on: req.db).filter(UpdateToken.self, \.$updateDate >= lastUpdate).sort(UpdateToken.self, \.$updateDate, .descending).all()
+            sets = try await UpdateSet.query(on: req.db).filter(UpdateSet.self, \.$updateDate >= lastUpdate).sort(UpdateSet.self, \.$updateDate, .descending).all()
+        } catch {
+            print(error)
+        }
+        return Updates(updateCards: cards, updateTokens: tokens, updateSets: sets)
     }
     
     @Sendable
@@ -34,19 +47,31 @@ struct UpdatesController: RouteCollection {
         
         for s in update.newSetCodes {
             let set = UpdateSet(symbol: s, updateDate: update.updateDate)
-            try await set.save(on: req.db)
+            do {
+                try await set.save(on: req.db)
+            } catch {
+                print(error)
+            }
             print("Added Set: \(s)")
         }
         for c in update.updatedCards {
             let existingCard = try await UpdateCard.query(on: req.db).filter(UpdateCard.self, \UpdateCard.$cardUUID == c.cardUUID).first()
             if let existingCard {
                 existingCard.cardJSON = c.cardJSON
-                try await existingCard.save(on: req.db)
+                do {
+                    try await existingCard.save(on: req.db)
+                } catch {
+                    print(error)
+                }
                 print("Updated Card: \(existingCard.cardUUID)")
             }
             else {
                 let card = UpdateCard(cardUUID: c.cardUUID, cardJSON: c.cardJSON, cardSetCode: c.cardSetCode, updateDate: update.updateDate)
-                try await card.save(on: req.db)
+                do {
+                    try await card.save(on: req.db)
+                } catch {
+                    print(error)
+                }
                 print("Added Card: \(card.cardUUID)")
             }
         }
@@ -54,12 +79,20 @@ struct UpdatesController: RouteCollection {
             let existingToken = try await UpdateToken.query(on: req.db).filter(UpdateToken.self, \UpdateToken.$tokenUUID == t.tokenUUID).first()
             if let existingToken {
                 existingToken.tokenJSON = t.tokenJSON
-                try await existingToken.save(on: req.db)
+                do {
+                    try await existingToken.save(on: req.db)
+                } catch {
+                    print(error)
+                }
                 print("Updated Token: \(existingToken.tokenUUID)")
             }
             else {
                 let token = UpdateToken(tokenUUID: t.tokenUUID, tokenJSON: t.tokenJSON, tokenSetCode: t.tokenSetCode, updateDate: update.updateDate)
-                try await token.save(on: req.db)
+                do {
+                    try await token.save(on: req.db)
+                } catch {
+                    print(error)
+                }
                 print("Added Token: \(token.tokenUUID)")
             }
         }
@@ -70,6 +103,6 @@ struct UpdatesController: RouteCollection {
         
         print("UpdateDate: \(update.updateDate)")
         
-       return "Update created"
+        return "Update created"
     }
 }

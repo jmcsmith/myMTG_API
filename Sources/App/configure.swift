@@ -13,7 +13,7 @@ public func configure(_ app: Application) async throws {
     tls1.certificateVerification = .none
     
     app.databases.use(DatabaseConfigurationFactory.mysql(
-        hostname: Environment.get("DATABASE_HOST") ?? "localhost",
+        hostname: Environment.get("DATABASE_HOST") ?? "192.168.97.2",
         port: Environment.get("DATABASE_PORT").flatMap(Int.init(_:)) ?? MySQLConfiguration.ianaPortNumber,
         username: Environment.get("DATABASE_USERNAME") ?? "vapor_username",
         password: Environment.get("DATABASE_PASSWORD") ?? "vapor_password",
