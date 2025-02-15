@@ -8,6 +8,7 @@ public func configure(_ app: Application) async throws {
     // uncomment to serve files from /Public folder
     // app.middleware.use(FileMiddleware(publicDirectory: app.directory.publicDirectory))
     app.http.server.configuration.responseCompression = .enabled
+    app.routes.defaultMaxBodySize = 1073741824
     
     var tls1 = TLSConfiguration.makeClientConfiguration()
     tls1.certificateVerification = .none
