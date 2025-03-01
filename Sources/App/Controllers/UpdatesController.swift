@@ -58,6 +58,7 @@ struct UpdatesController: RouteCollection {
             let existingCard = try await UpdateCard.query(on: req.db).filter(UpdateCard.self, \UpdateCard.$cardUUID == c.cardUUID).first()
             if let existingCard {
                 existingCard.cardJSON = c.cardJSON
+                existingCard.updateDate = update.updateDate
                 do {
                     try await existingCard.save(on: req.db)
                 } catch {
@@ -79,6 +80,7 @@ struct UpdatesController: RouteCollection {
             let existingToken = try await UpdateToken.query(on: req.db).filter(UpdateToken.self, \UpdateToken.$tokenUUID == t.tokenUUID).first()
             if let existingToken {
                 existingToken.tokenJSON = t.tokenJSON
+                existingToken.updateDate = update.updateDate
                 do {
                     try await existingToken.save(on: req.db)
                 } catch {
