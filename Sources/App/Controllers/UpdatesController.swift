@@ -28,9 +28,12 @@ struct UpdatesController: RouteCollection {
         dateFormatter.dateFormat = "yyyy-MM-dd"
         let lastUpdate = dateFormatter.date(from: inputString) ?? Date()
         do {
-            cards = try await UpdateCard.query(on: req.db).filter(UpdateCard.self, \.$updateDate >= lastUpdate).sort(UpdateCard.self, \.$updateDate, .descending).all()
-            tokens = try await UpdateToken.query(on: req.db).filter(UpdateToken.self, \.$updateDate >= lastUpdate).sort(UpdateToken.self, \.$updateDate, .descending).all()
             sets = try await UpdateSet.query(on: req.db).filter(UpdateSet.self, \.$updateDate >= lastUpdate).sort(UpdateSet.self, \.$updateDate, .descending).all()
+            var setSymbols = sets.map(\.symbol)
+            print(setSymbols)
+            cards = try await UpdateCard.query(on: req.db).filter(UpdateCard.self, \.$updateDate >= lastUpdate).filter(UpdateCard.self, \.$cardSetCode !~ setSymbols).sort(UpdateCard.self, \.$updateDate, .descending).all()
+            tokens = try await UpdateToken.query(on: req.db).filter(UpdateToken.self, \.$updateDate >= lastUpdate).filter(UpdateToken.self, \.$tokenSetCode !~ setSymbols).sort(UpdateToken.self, \.$updateDate, .descending).all()
+         
         } catch {
             print(error)
         }
